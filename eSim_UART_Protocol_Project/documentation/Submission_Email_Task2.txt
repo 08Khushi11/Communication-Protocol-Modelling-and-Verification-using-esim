@@ -14,6 +14,7 @@ Below are the details of my proposed and verified circuit simulation:
   Noise-Tolerant UART Communication Transceiver Link using eSim
 • Communication Protocol: Universal Asynchronous Receiver-Transmitter (UART) 8-E-1 
   (8 Data Bits, Even Parity, 1 Stop Bit, 16x Oversampling Clock Recovery)
+• GitHub Repository: https://github.com/08Khushi11/Communication-Protocol-Modelling-and-Verification-using-esim
 • System Architecture:
     - Transmitter (TX): RTL / Gate-level FSM with frame serializer & parity generator
     - Physical Channel: Distributed lossy RC transmission line (R=150 ohms, C=940 pF) 
@@ -45,22 +46,21 @@ Below are the details of my proposed and verified circuit simulation:
 --------------------------------------------------------------------------------
 3. ATTACHMENTS & REPOSITORY FILES
 --------------------------------------------------------------------------------
-The project directory contains the complete source files:
+The attached archive (eSim_Semester_Long_Internship_Task2_Submission.zip) contains:
 • Schematic & Netlists: esim_schematic_netlist/ (UART_MixedSignal.kicad_sch, .cir)
 • Verilog RTL Modules: src_verilog/ (uart_tx.v, uart_rx.v, uart_top.v, uart_tb.v)
 • Verification Engine: verification/verify_simulation.py, simulation_summary.txt
 • Waveform Plots: plots/ (01_full_system_timing.png, 02_mixed_signal_physical_channel.png, 
   03_receiver_sampling_synchronization.png, 04_error_detection_verification.png)
 • Reports: documentation/ (Task2_Project_Proposal.md, Task2_Project_Report.md)
-
-The complete project folder has also been archived into a submission ZIP package.
+• GitHub Link: https://github.com/08Khushi11/Communication-Protocol-Modelling-and-Verification-using-esim
 
 Kindly review my submission and let me know if any further details or demonstrations are required.
 
 Thank you very much.
 
 Sincerely,
-[Your Full Name]
-[Your Contact Number]
-[Your College / Institute Name]
-[Your Degree & Year of Study]
+Khushbu Tewari
+AMRAPALI UNIVERSITY
+Email: khushbutewari68@gmail.com
+GitHub: https://github.com/08Khushi11

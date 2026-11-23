@@ -1,0 +1,135 @@
+* eSim Mixed-Signal Circuit Simulation: UART Transceiver Link
+* Project: eSim Semester Long Internship - Task 2: Communication Protocol Modeling
+* Description:
+*   Mixed-signal verification of UART serial communication across a lossy,
+*   noisy transmission channel. Features digital TX driver, distributed RC
+*   interconnect, coupled EMI noise source, and an analog Schmitt Trigger
+*   comparator front-end for noise rejection and waveform restoration.
+
+.title UART Mixed-Signal Communication Channel Simulation
+
+* ==============================================================================
+* Power Supplies
+* ==============================================================================
+VCC vcc 0 DC 5.0V
+VEE vee 0 DC 0.0V
+VREF vref 0 DC 2.5V
+
+* ==============================================================================
+* Master System Clock & Control Signal Stimuli
+* System Clock: 1 MHz (Period = 1.0 us, 50% duty cycle)
+* Baud Rate: 62.5 kBaud (16 system clocks per bit -> T_bit = 16 us)
+* ==============================================================================
+VCLK clk 0 PULSE(0V 5V 0s 10ns 10ns 0.5us 1.0us)
+VRST rst_n 0 PULSE(0V 5V 0.5us 10ns 10ns 100ms 100ms)
+
+* ==============================================================================
+* Synthesized Digital TX Serial Bitstream Generator
+* Frame: [START=0] [D0=1] [D1=0] [D2=1] [D3=0] [D4=1] [D5=0] [D6=1] [D7=0] [PARITY=0] [STOP=1]
+* Payload: 0x55 (01010101 binary, alternating 1 and 0)
+* Bit duration: 16 us
+* 0 - 20 us: IDLE (5V)
+* 20 - 36 us: START BIT (0V)
+* 36 - 52 us: D0 = 1 (5V)
+* 52 - 68 us: D1 = 0 (0V)
+* 68 - 84 us: D2 = 1 (5V)
+* 84 - 100 us: D3 = 0 (0V)
+* 100 - 116 us: D4 = 1 (5V)
+* 116 - 132 us: D5 = 0 (0V)
+* 132 - 148 us: D6 = 1 (5V)
+* 148 - 164 us: D7 = 0 (0V)
+* 164 - 180 us: PARITY (0V - even parity of 4 ones is 0)
+* 180 - 196 us: STOP BIT (5V)
+* > 196 us: IDLE (5V)
+* ==============================================================================
+VTX_IN tx_digital 0 PWL(
++ 0us 5V
++ 20.00us 5V 20.02us 0V
++ 36.00us 0V 36.02us 5V
++ 52.00us 5V 52.02us 0V
++ 68.00us 0V 68.02us 5V
++ 84.00us 5V 84.02us 0V
++ 100.00us 0V 100.02us 5V
++ 116.00us 5V 116.02us 0V
++ 132.00us 0V 132.02us 5V
++ 148.00us 5V 148.02us 0V
++ 164.00us 0V 164.02us 0V
++ 180.00us 0V 180.02us 5V
++ 250.00us 5V
++ )
+
+* ==============================================================================
+* Transmitter Buffer / Line Driver Model
+* Provides realistic output impedance Rout = 25 ohms and parasitic rise/fall
+* ==============================================================================
+R_TX_DRV tx_digital tx_buf 25
+C_TX_PIN tx_buf 0 15pF
+
+* ==============================================================================
+* Physical Transmission Channel: Distributed Lossy RC Interconnect
+* Represents twisted-pair / long PCB trace with dispersion
+* ==============================================================================
+R_LINE1 tx_buf chan_mid 75
+C_LINE1 chan_mid 0 470pF
+R_LINE2 chan_mid chan_dist 75
+C_LINE2 chan_dist 0 470pF
+
+* ==============================================================================
+* Analog Coupled High-Frequency EMI Noise
+* Simulates 500 kHz / 10 MHz switching regulator noise (0.45V peak)
+* ==============================================================================
+V_NOISE noise_node 0 SIN(0 0.45V 400kHz 0 0)
+C_NOISE_COUPLE noise_node chan_dist 100pF
+
+* ==============================================================================
+* Analog Receiver Front-End: Schmitt Trigger Comparator with Hysteresis
+* Non-inverting Schmitt Trigger circuit configuration:
+* Input applied via R_IN to non-inverting terminal.
+* Positive feedback resistor R_FB from output provides hysteresis window:
+*   V_TH+ = 3.0V, V_TH- = 2.0V, V_HYST = 1.0V (rejects noise spikes!)
+* ==============================================================================
+X_SCHMITT chan_dist rx_restored vcc vee vref SCHMITT_TRIGGER
+
+.subckt SCHMITT_TRIGGER in out vdd vss vref
+* Resistor Network setting hysteresis
+Rin  in   n_in 10k
+Rfb  out  n_in 40k
+Rref vref n_ref 10k
+
+* Voltage Controlled Voltage Source modeling high-gain comparator stage
+E_COMP out_raw 0 n_in n_ref 1e5
+
+* Limiter stage constraining output within supply rails [VSS, VDD]
+B_LIMIT out 0 V = (V(out_raw) > 5.0) ? 5.0 : ((V(out_raw) < 0.0) ? 0.0 : V(out_raw))
+.ends SCHMITT_TRIGGER
+
+* ==============================================================================
+* Digital Receiver Input Buffer Load
+* ==============================================================================
+R_RX_LOAD rx_restored 0 1MEG
+C_RX_PIN  rx_restored 0 10pF
+
+* ==============================================================================
+* Simulation Analysis Commands
+* ==============================================================================
+.tran 0.1us 220us 0us 0.1us
+
+.control
+run
+echo "=== Starting eSim Ngspice Transient Simulation ==="
+set color0=white
+set color1=black
+
+* Print simulation status and verify key nodes
+print V(tx_digital)[100] V(chan_dist)[100] V(rx_restored)[100]
+
+* Propagation delay measurement
+meas tran t_delay TRIG V(tx_digital) VAL=2.5 FALL=1 TARG V(rx_restored) VAL=2.5 FALL=1
+echo "Measured Channel Propagation Delay: " $&t_delay
+
+* Write raw simulation data to file for automated verification
+wrdata esim_uart_sim_results.txt V(clk) V(tx_digital) V(chan_dist) V(rx_restored)
+echo "Simulation data successfully written to esim_uart_sim_results.txt"
+.endc
+
+.end

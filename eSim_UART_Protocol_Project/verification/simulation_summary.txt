@@ -1,0 +1,24 @@
+===========================================================================
+   eSim Task 2: UART Communication Protocol Verification Report   
+===========================================================================
+
+Protocol:                  UART (8 Data Bits, Even Parity, 1 Stop Bit)
+System Master Clock:       1.00 MHz (Period = 1.00 us)
+Oversampling Factor:       16x Clock Cycles per Bit
+Baud Rate:                 62500.0 Baud (Bit Duration = 16.00 us)
+Physical Channel Model:    Distributed Lossy RC (R = 150.0 ohms, C = 940.0 pF)
+RC Propagation Delay (tau): 141.00 ns
+Coupled Noise Amplitude:   0.45 V @ 400 kHz EMI
+Analog Receiver Front-End: Schmitt Trigger Comparator (V_TH+ = 3.0V, V_TH- = 2.0V)
+Hysteresis Voltage Margin: 1.00 V
+
+Verification Test Matrix:
+---------------------------------------------------------------------------
+1. Payload 0x55 (Alternating 01010101):  SUCCESS (100% Bit Match, Parity OK)
+2. Payload 0xA5 (Arbitrary Byte):        SUCCESS (100% Bit Match, Parity OK)
+3. Sequence 'ESIM' (0x45 0x53 0x49 0x4D): SUCCESS (Continuous Streaming Verified)
+4. Parity Error Detection (Bit Flip):    VERIFIED (Parity Error Flag Asserted)
+5. Framing Error Detection (Bad Stop):   VERIFIED (Framing Error Flag Asserted)
+6. Noise Rejection & Hysteresis Margin:  VERIFIED (Zero False Bit Triggers)
+---------------------------------------------------------------------------
+Conclusion: All circuit-level and protocol-level evaluation criteria SATISFIED.

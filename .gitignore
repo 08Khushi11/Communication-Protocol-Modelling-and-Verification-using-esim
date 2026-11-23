@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary aliases
+v.bat
+v.ps1
+eSim_UART_Protocol_Project.bat
+eSim_UART_Protocol_Project.ps1
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

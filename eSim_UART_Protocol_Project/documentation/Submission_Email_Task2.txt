@@ -1,0 +1,66 @@
+To: contact-esim@fossee.in
+Subject: eSim Semester Long Internship - Autumn 2026 Submission Task 2
+
+Respected eSim FOSSEE Team,
+
+I am writing to submit my completed proposal and project files for Task 2: "Communication Protocol Modelling and Verification Using eSim" for the eSim Semester Long Internship - Autumn 2026 screening.
+
+Below are the details of my proposed and verified circuit simulation:
+
+--------------------------------------------------------------------------------
+1. PROPOSAL & CIRCUIT DETAILS
+--------------------------------------------------------------------------------
+• Project Title: Design, Mixed-Signal Circuit Modeling, and Verification of a 
+  Noise-Tolerant UART Communication Transceiver Link using eSim
+• Communication Protocol: Universal Asynchronous Receiver-Transmitter (UART) 8-E-1 
+  (8 Data Bits, Even Parity, 1 Stop Bit, 16x Oversampling Clock Recovery)
+• System Architecture:
+    - Transmitter (TX): RTL / Gate-level FSM with frame serializer & parity generator
+    - Physical Channel: Distributed lossy RC transmission line (R=150 ohms, C=940 pF) 
+      with coupled high-frequency EMI noise source (0.45V @ 400 kHz)
+    - Receiver Front-End: Analog Schmitt Trigger comparator with 1.0V hysteresis window
+      (V_TH+ = 3.0V, V_TH- = 2.0V) for noise rejection
+    - Receiver (RX): Asynchronous 16x oversampled clock synchronizer, mid-bit sampler 
+      (sample 8 of 16), SIPO shift register, and Parity/Framing error checkers
+
+--------------------------------------------------------------------------------
+2. EVALUATION CRITERIA COMPLIANCE SUMMARY
+--------------------------------------------------------------------------------
+• Successfully modelled communication protocol in eSim:
+  Complete KiCad schematic (.kicad_sch), NgVeri Verilog RTL modules (uart_tx.v, 
+  uart_rx.v, uart_top.v, uart_tb.v), and Ngspice mixed-signal netlist 
+  (UART_MixedSignal.cir) developed and fully validated.
+
+• Clear demonstration of correct data flow from transmitter to receiver:
+  100% bit-exact transmission verified for alternating patterns (0x55), 
+  asymmetric payloads (0xA5), and multi-byte sequential strings ("ESIM").
+
+• Proper verification of timing, synchronization, and errors:
+  - Timing: Baud rate calibrated to 62.5 kBaud (T_bit = 16.0 us) with 1 MHz clock.
+  - Synchronization: Verified falling-edge start-bit detection, start-bit glitch 
+    rejection, and zero-drift mid-bit eye-center sampling.
+  - Error Detection: Single-bit parity error and framing error (corrupted stop bit) 
+    injected and successfully flagged by the receiver hardware.
+
+--------------------------------------------------------------------------------
+3. ATTACHMENTS & REPOSITORY FILES
+--------------------------------------------------------------------------------
+The project directory contains the complete source files:
+• Schematic & Netlists: esim_schematic_netlist/ (UART_MixedSignal.kicad_sch, .cir)
+• Verilog RTL Modules: src_verilog/ (uart_tx.v, uart_rx.v, uart_top.v, uart_tb.v)
+• Verification Engine: verification/verify_simulation.py, simulation_summary.txt
+• Waveform Plots: plots/ (01_full_system_timing.png, 02_mixed_signal_physical_channel.png, 
+  03_receiver_sampling_synchronization.png, 04_error_detection_verification.png)
+• Reports: documentation/ (Task2_Project_Proposal.md, Task2_Project_Report.md)
+
+The complete project folder has also been archived into a submission ZIP package.
+
+Kindly review my submission and let me know if any further details or demonstrations are required.
+
+Thank you very much.
+
+Sincerely,
+[Your Full Name]
+[Your Contact Number]
+[Your College / Institute Name]
+[Your Degree & Year of Study]

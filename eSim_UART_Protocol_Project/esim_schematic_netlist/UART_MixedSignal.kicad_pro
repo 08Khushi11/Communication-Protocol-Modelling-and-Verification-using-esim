@@ -1,0 +1,76 @@
+{
+  "boards": [],
+  "cvpcb": {
+    "equivalence_files": []
+  },
+  "erc": {
+    "erc_exclusions": []
+  },
+  "generator": "eSim_v2.4",
+  "meta": {
+    "filename": "UART_MixedSignal.kicad_pro",
+    "version": 1
+  },
+  "net_settings": {
+    "last_client": "eeschema",
+    "net_classes": [
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_via_gap": 0.25,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Default",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
+      }
+    ]
+  },
+  "pcbnew": {
+    "last_paths": {
+      "gencad": "",
+      "idf": "",
+      "netlist": "",
+      "specctra_dsn": "",
+      "step": "",
+      "vrml": ""
+    }
+  },
+  "schematic": {
+    "annotate_start_num": 1,
+    "drawing": {
+      "dashed_lines_dash_length_ratio": 12.0,
+      "dashed_lines_gap_length_ratio": 3.0,
+      "default_line_thickness": 6.0,
+      "default_text_size": 50.0,
+      "field_names": [],
+      "intersheets_ref_own_page": false,
+      "intersheets_ref_prefix": "",
+      "intersheets_ref_short": false,
+      "intersheets_ref_show": false,
+      "intersheets_ref_suffix": "",
+      "junction_size_choice": 3,
+      "junction_size_mult": 1.0,
+      "pin_symbol_size": 25.0,
+      "text_offset_ratio": 0.15
+    },
+    "legacy_options": {
+      "drawing_size": "A4",
+      "show_page_limits": true
+    },
+    "page": {
+      "height": 21000.0,
+      "width": 29700.0
+    },
+    "subsheets": []
+  },
+  "sheets": [
+    [
+      "3b4f6a70-8b9c-42e1-a0e2-7634f19bca01",
+      ""
+    ]
+  ]
+}
